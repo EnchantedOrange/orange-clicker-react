@@ -94,6 +94,7 @@ class App extends React.Component {
     try {
       const cookieGold = parseInt(document.cookie.split('gold=')[1].split(';')[0]);
       const cookieDamage = parseInt(document.cookie.split('damage=')[1].split(';')[0]);
+      console.log(cookieGold, cookieDamage);
       this.setState({
         gold: cookieGold,
         damage: cookieDamage

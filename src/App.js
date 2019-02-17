@@ -91,17 +91,13 @@ class App extends React.Component {
         this.setState({totalPeopleCount: data.count, isLoading: false});
         this.getNewEnemy();
       });
-    try {
-      const cookieGold = parseInt(document.cookie.split('gold=')[1].split(';')[0]);
-      const cookieDamage = parseInt(document.cookie.split('damage=')[1].split(';')[0]);
-      this.setState({
-        gold: cookieGold,
-        damage: cookieDamage
-      });
-      console.log(this.state.gold, this.state.damage);
-    } catch(err) {
-      return;
-    }
+    const cookieGold = parseInt(document.cookie.split('gold=')[1].split(';')[0]);
+    const cookieDamage = parseInt(document.cookie.split('damage=')[1].split(';')[0]);
+    this.setState({
+      gold: cookieGold,
+      damage: cookieDamage
+    });
+    console.log(this.state.gold, this.state.damage);
   }
 
   render() {

@@ -50,8 +50,6 @@ class App extends React.Component {
       });
       this.setCookie('gold', this.state.gold);
     }
-
-    console.log(document.cookie.split('gold=')[1].split(';')[0]);
   }
 
   handleBuy(event) {
@@ -93,10 +91,24 @@ class App extends React.Component {
         this.setState({totalPeopleCount: data.count, isLoading: false});
         this.getNewEnemy();
       });
-    const cookieGold = parseInt(document.cookie.split('gold=')[1].split(';')[0]);
-    //const cookieDamage = parseInt(document.cookie.split('damage=')[1].split(';')[0]);
+    
+    let cookieGold, cookieDamage;
+
+    try {
+      cookieGold = parseInt(document.cookie.split('gold=')[1].split(';')[0]);
+    } catch(err) {
+      cookieGold = 0;
+    }
+
+    try {
+      cookieDamage = parseInt(document.cookie.split('damage=')[1].split(';')[0]);
+    } catch(err) {
+      cookieDamage = 5;
+    }
+
     this.setState({
-      gold: cookieGold
+      gold: cookieGold,
+      damage: cookieDamage
     });
   }
 

@@ -22,6 +22,12 @@ class App extends React.Component {
     this.toggleStore = this.toggleStore.bind(this);
   }
 
+  setCookie(name, value) {
+    let date = new Date();
+    date.setDate(date.getDate() + 30);
+    document.cookie = `${name}=${value};path=/;expires=${date.toUTCString()}`;
+  }
+
   getNewEnemy() {
     this.setState({isLoading: true});
     fetch(`https://swapi.co/api/people/${Math.round(Math.random() * this.state.totalPeopleCount)}`)
@@ -37,23 +43,37 @@ class App extends React.Component {
     } else {
       this.getNewEnemy();
       this.setState(prevState => {
-        return {health: 100, gold: prevState.gold + Math.round(Math.random() * 10)};
+        return ({
+          health: 100,
+          gold: prevState.gold + Math.round(Math.random() * 10)
+        });
       });
+      this.setCookie('gold', this.state.gold);
     }
   }
 
   handleBuy(event) {
     const { id } = event.target;
     let price;
-    if (id === 'buy_1_damage') {
-      price = 50;
-      this.state.gold >= price &&
-        this.setState(prevState => {
-          return ({
-            gold: prevState.gold - price,
-            damage: prevState.damage + 1
-          });
+
+    switch(id) {
+      case 'buy_1_damage':
+        price = 50;
+        break;
+      default:
+        return;
+    }
+
+    if (this.state.gold >= price) {
+      this.setState(prevState => {
+        return ({
+          gold: prevState.gold - price,
+          damage: prevState.damage + 1
         });
+      });
+
+      this.setCookie('gold', this.state.gold);
+      this.setCookie('damage', this.state.damage);
     }
   }
 
@@ -71,6 +91,17 @@ class App extends React.Component {
         this.setState({totalPeopleCount: data.count, isLoading: false});
         this.getNewEnemy();
       });
+    try {
+      const cookieGold = parseInt(document.cookie.split('gold=')[1].split(';')[0]);
+      const cookieDamage = parseInt(document.cookie.split('damage=')[1].split(';')[0]);
+      this.setState({
+        gold: cookieGold,
+        damage: cookieDamage
+      });
+      console.log(this.state.gold, this.state.damage);
+    } catch(err) {
+      return;
+    }
   }
 
   render() {

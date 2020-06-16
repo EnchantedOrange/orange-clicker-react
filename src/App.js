@@ -30,7 +30,7 @@ class App extends React.Component {
 
   getNewEnemy() {
     this.setState({isLoading: true});
-    fetch(`https://swapi.co/api/people/${Math.round(Math.random() * this.state.totalPeopleCount)}`)
+    fetch(`https://swapi.dev/api/people/${Math.round(Math.random() * this.state.totalPeopleCount)}`)
       .then(response => response.json())
       .then(data => this.setState({enemyName: data.name, isLoading: false}));
   }
@@ -85,7 +85,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.setState({isLoading: true});
-    fetch('https://swapi.co/api/people/')
+    fetch('https://swapi.dev/api/people/')
       .then(response => response.json())
       .then(data => {
         this.setState({totalPeopleCount: data.count, isLoading: false});
